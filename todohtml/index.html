@@ -47,7 +47,7 @@
 	  </div>
 
 
-	  <input type="text" class="btn btn-primary addBtn" value="Submit">
+	  <input type="Submit" class="btn btn-primary addBtn" value="Submit">
     
 	</div>
 	<div class="col-md-3"></div>
@@ -80,6 +80,29 @@
 <script type="text/javascript">
 	fetchData();
 	$(document).ready(function(){
+		$(".dell").click(function(){
+			var id = $(this).val();
+			//alert(id);
+			$.ajax({
+				// headers: { 
+			 //        Accept : "application/json; charset=utf-8",
+			 //        "Content-Type": "application/json; charset=utf-8"
+			 //    },
+
+				url  : "http://localhost:3000/delete/"+id,
+				type : "GET",
+			    dataType: 'json',
+			    async: false,				
+				success:function(data){
+					console.log(data);				
+					alert(data);
+					fetchData();
+				}
+
+
+			});	
+
+			});	
 		
 		$(".addBtn").click(function(){
 			var name = $("#name").val();
@@ -95,27 +118,31 @@
 
 				url  : "http://localhost:3000/tasks",
 				type : "POST",
-				// dataType: 'jsonp',
+			    dataType: 'json',
 				data : {
 					name  	: name,
 					email 	: email,
 					phone 	: phone,
 					address : address
 				},
+				async: false,
 				success:function(data){
 					console.log("hiiii");
 					console.log(JSON.stringify(data));
+				    $("#name").val('');
+			        $("#email").val('');
+			        $("#phone").val('');
+			        $("#address").val('');
 					fetchData();
 				}
 
 
-			});
-
-
-		
+			});		
 
 		
 		});
+
+		
 		
 	});
 
@@ -157,7 +184,7 @@
 
 						output += '<td>';
 						output +=  '<button type="button"  class="btn btn-success">Update</button>&nbsp;&nbsp;';
-						output +=  '<button type="button"  class="btn btn-danger">Danger</button>';
+						output +=  '<button type="button"  class="btn btn-danger dell" value="'+el._id+'">Delete</button>';
 						output += '</td>';
 
 						output += '</tr>';
@@ -171,6 +198,9 @@
 			}
 
 			
+
+			
 </script>	
+
 </body>
 </html>

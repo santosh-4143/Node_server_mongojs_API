@@ -1,13 +1,18 @@
-var express = require('express'),
-  app = express(),
-  port = process.env.PORT || 3000,
-  mongoose = require('mongoose'),
-  Task = require('./api/models/custommodel'), //created model loading here
+var express = require('express');
+var mongojs = require('mongojs');
+  app = express();
+  port = process.env.PORT || 3000;
+  
+  var db = mongojs('Tododb');
   bodyParser = require('body-parser');
   
-// mongoose instance connection url connection
-mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost/Tododb'); 
+db.on('error', function (err) {
+	console.log('database error', err);
+});
+
+db.on('connect', function () {
+	console.log('database connected');
+});
 
 var cors=require('cors');
 

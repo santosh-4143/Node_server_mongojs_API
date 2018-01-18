@@ -8,8 +8,13 @@ module.exports = function(app) {
     .post(todoList.create_a_task);
 
 
-  app.route('/tasks/:taskId')
-    .get(todoList.read_a_task)
-    .put(todoList.update_a_task)
-    .delete(todoList.delete_a_task);
+  app.route('/update/:id')   
+    .get(todoList.update_a_task);
+
+   app.route('/view/:id')   
+    .get(todoList.view_a_task); 
+   
+
+    app.route('/delete/:delid')
+    .get(todoList.delete_a_task);
 };

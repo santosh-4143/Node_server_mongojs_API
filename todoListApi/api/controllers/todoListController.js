@@ -1,38 +1,28 @@
 'use strict';
-
-
-var mongoose = require('mongoose'),
-  Task = mongoose.model('Custom');
-
-exports.list_all_tasks = function(req, res) {
-  Task.find({}, function(err, task) {
+var mongojs = require('mongojs'), 
+db = mongojs('Tododb');
+exports.list_all_tasks = function(req, res) {  
+  db.customs.find().sort({"_id":-1},function (err, docs) {
     if (err)
       res.send(err);
-    res.json(task);
-  });
+    console.log(docs);
+    res.json(docs)
+});
 };
 
 
 
 
 exports.create_a_task = function(req, res) {
-  var new_task = new Task(req.body);
-  new_task.save(function(err, task) {
-    if (err)
-      res.send(err);
-    console.log(task);
-    res.json(task);
-  });
-};
-
-
-exports.read_a_task = function(req, res) {
-  Task.findById(req.params.taskId, function(err, task) {
+  console.log(req.body);
+  db.customs.save(req.body,function(err, task) {
     if (err)
       res.send(err);
     res.json(task);
   });
 };
+
+
 
 
 exports.update_a_task = function(req, res) {
@@ -41,18 +31,25 @@ exports.update_a_task = function(req, res) {
       res.send(err);
     res.json(task);
   });
-};
+};   
 
 
-exports.delete_a_task = function(req, res) {
-
-
-  Task.remove({
-    _id: req.params.taskId
-  }, function(err, task) {
+exports.view_a_task = function(req, res) {
+  db.customs.find({_id: mongojs.ObjectId(req.params.id)},function (err, docs) {
     if (err)
       res.send(err);
-    res.json({ message: 'Task successfully deleted' });
-  });
+    console.log(docs);
+    res.json(docs)
+});
+};  
+
+exports.delete_a_task = function(req, res) {
+console.log(req.params.delid); 
+  db.customs.remove({_id: mongojs.ObjectId(req.params.delid)},function (err, docs) {
+    if (err)
+      res.send(err);
+    console.log(docs);
+    res.json("Data Delete")
+});
 };
 
